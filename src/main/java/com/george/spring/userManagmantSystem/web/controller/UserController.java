@@ -1,30 +1,27 @@
 package com.george.spring.userManagmantSystem.web.controller;
 
 import com.george.spring.userManagmantSystem.repository.UserRepository;
+import com.george.spring.userManagmantSystem.service.UserService;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
 import com.george.spring.userManagmantSystem.web.dto.mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private final UserMapper userMapper;
-
+    private UserMapper userMapper;
+    @Autowired
+    private UserService userService;
     @GetMapping
     public ResponseEntity getAllUsers() {
         try {
-            return ResponseEntity.ok(userRepository.findAll());
+            return ResponseEntity.ok(userService.getAllUsers());
         } catch(Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -32,8 +29,24 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable  Long id) {
         try {
-            UserDto userDto = userMapper.toDto(userRepository.findById(id).get());
-            return ResponseEntity.ok(userDto);
+            return ResponseEntity.ok(userService.getUserById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(userService.updateUser(userDto, id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.ok("User successfully deleted");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
