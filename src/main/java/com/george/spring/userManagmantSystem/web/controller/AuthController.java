@@ -1,6 +1,7 @@
 package com.george.spring.userManagmantSystem.web.controller;
 
 import com.george.spring.userManagmantSystem.domain.UserEntity;
+import com.george.spring.userManagmantSystem.exception.UserAlreadyExistsException;
 import com.george.spring.userManagmantSystem.repository.UserRepository;
 import com.george.spring.userManagmantSystem.service.AuthService;
 import com.george.spring.userManagmantSystem.service.UserService;
@@ -20,9 +21,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity registerNewUser(@RequestBody UserDto userDto) {
         try {
-//            userRepository.save(userEntity);
             return ResponseEntity.ok(authService.register(userDto));
-        } catch (Exception e) {
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

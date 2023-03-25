@@ -1,6 +1,7 @@
 package com.george.spring.userManagmantSystem.service.impl;
 
 import com.george.spring.userManagmantSystem.domain.UserEntity;
+import com.george.spring.userManagmantSystem.exception.UserNotFoundException;
 import com.george.spring.userManagmantSystem.repository.UserRepository;
 import com.george.spring.userManagmantSystem.service.UserService;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
@@ -20,9 +21,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public UserDto getUserById(Long id) {
+    public UserDto getUserById(Long id) throws UserNotFoundException {
 
-        UserEntity userEntity = userRepository.findById(id).get();
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
         UserDto userDto = userMapper.toDto(userEntity);
         return userDto;
     }
@@ -37,9 +39,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto, Long id) {
+    public UserDto updateUser(UserDto userDto, Long id) throws UserNotFoundException {
 
-        UserEntity userEntity = userRepository.findById(id).get();
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
 
         if (userDto.getUsername() != null) {
             userEntity.setUsername(userDto.getUsername());
@@ -54,7 +57,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long id) throws UserNotFoundException {
+
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        userRepository.deleteById(userEntity.getId());
     }
 }

@@ -1,5 +1,6 @@
 package com.george.spring.userManagmantSystem.web.controller;
 
+import com.george.spring.userManagmantSystem.exception.UserNotFoundException;
 import com.george.spring.userManagmantSystem.repository.UserRepository;
 import com.george.spring.userManagmantSystem.service.UserService;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
@@ -30,6 +31,8 @@ public class UserController {
     public ResponseEntity getUserById(@PathVariable  Long id) {
         try {
             return ResponseEntity.ok(userService.getUserById(id));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -38,6 +41,8 @@ public class UserController {
     public ResponseEntity updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
         try {
             return ResponseEntity.ok(userService.updateUser(userDto, id));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -47,6 +52,8 @@ public class UserController {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok("User successfully deleted");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
