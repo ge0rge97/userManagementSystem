@@ -7,3 +7,8 @@ spring:
     username: root
     password: E123456789e
     driver-class-name: com.mysql.cj.jdbc.Driver
+security:
+  jwt:
+    secret: ZGpnaWVuZmdocG93aGpnd2VmZ2p3ZWZnaXdkdmZbc2R2anNkZnVvYmhkZmJpdQ==
+    access: 3600000
+    refresh: 2592000000
