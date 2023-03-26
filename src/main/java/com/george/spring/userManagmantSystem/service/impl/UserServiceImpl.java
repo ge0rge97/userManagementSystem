@@ -21,6 +21,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
+    public UserEntity getByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+    @Override
     public UserDto getUserById(Long id) throws UserNotFoundException {
 
         UserEntity userEntity = userRepository.findById(id)

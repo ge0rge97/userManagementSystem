@@ -1,10 +1,8 @@
 package com.george.spring.userManagmantSystem.web.controller;
 
 import com.george.spring.userManagmantSystem.exception.UserNotFoundException;
-import com.george.spring.userManagmantSystem.repository.UserRepository;
 import com.george.spring.userManagmantSystem.service.UserService;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
-import com.george.spring.userManagmantSystem.web.dto.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private UserService userService;
     @GetMapping
