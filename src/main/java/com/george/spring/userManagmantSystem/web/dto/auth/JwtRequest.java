@@ -1,7 +1,6 @@
 package com.george.spring.userManagmantSystem.web.dto.auth;
 
 public class JwtRequest {
-
 	private String username;
 	private String password;
 	//Empty constructor

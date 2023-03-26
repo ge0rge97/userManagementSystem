@@ -22,8 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final ApplicationContext applicationContext;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ApplicationContext applicationContext;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,8 +34,7 @@ public class ApplicationConfig {
         return configuration.getAuthenticationManager();
     }
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
-
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
                 .cors()
@@ -45,21 +44,24 @@ public class ApplicationConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(((request, response, authException) -> {
+                .authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.getWriter().write("Unauthorized");
-                }))
+                    response.getWriter().write("Unauthorized.");
+                })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.setStatus(HttpStatus.FORBIDDEN.value());
-                    response.getWriter().write("Unauthorized");
+                    response.getWriter().write("Unauthorized.");
                 })
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .anonymous().disable()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 }

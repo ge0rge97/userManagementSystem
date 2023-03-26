@@ -3,6 +3,8 @@ package com.george.spring.userManagmantSystem.web.controller;
 import com.george.spring.userManagmantSystem.exception.UserAlreadyExistsException;
 import com.george.spring.userManagmantSystem.service.AuthService;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
+import com.george.spring.userManagmantSystem.web.dto.auth.JwtRequest;
+import com.george.spring.userManagmantSystem.web.dto.auth.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +25,9 @@ public class AuthController {
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+    @PostMapping("/login")
+    public JwtResponse login(@RequestBody JwtRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 }
