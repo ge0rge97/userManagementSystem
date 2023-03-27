@@ -34,10 +34,6 @@ public class AuthServiceImpl implements AuthService {
         JwtResponse jwtResponse = new JwtResponse();
         authentificationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         UserEntity user = userService.getByUsername(loginRequest.getUsername());
-
-        System.out.println(user.getUsername() + " " + user.getPassword());
-
-
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
         jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(user.getId(), user.getUsername()));
@@ -47,18 +43,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDto register(UserDto userDto) throws UserAlreadyExistsException {
 
-//        UserEntity userEntity = userMapper.toEntity(userDto);
-//
-//        if (userRepository.findByUsername(userEntity.getUsername()) != null) {
-//            throw new UserAlreadyExistsException("User Already Exists");
-//        }
-//
-//        userRepository.save(userEntity);
-//        UserDto createdUser = userMapper.toDto(userEntity);
-//        return createdUser;
-
         UserEntity user = userMapper.toEntity(userDto);
-
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new UserAlreadyExistsException("User Already Exists");
         }
@@ -67,19 +52,4 @@ public class AuthServiceImpl implements AuthService {
         UserDto createdUser = userMapper.toDto(user);
         return createdUser;
     }
-
-//    public User create(User user) {
-//        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-//            throw new IllegalStateException("User already exists");
-//        }
-//        if (!user.getPassword().equals(user.getPasswordConfirmation())) {
-//            throw new IllegalStateException("Passwords do not match");
-//        }
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.create(user);
-//        Set<Role> roles = Set.of(Role.ROLE_USER);
-//        userRepository.insertUserRole(user.getId(), Role.ROLE_USER);
-//        user.setRoles(roles);
-//        return user;
-//    }
 }

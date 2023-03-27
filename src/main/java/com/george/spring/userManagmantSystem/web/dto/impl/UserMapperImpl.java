@@ -3,8 +3,6 @@ package com.george.spring.userManagmantSystem.web.dto.impl;
 import com.george.spring.userManagmantSystem.domain.UserEntity;
 import com.george.spring.userManagmantSystem.web.dto.UserDto;
 import com.george.spring.userManagmantSystem.web.dto.mapper.UserMapper;
-import org.apache.catalina.User;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component

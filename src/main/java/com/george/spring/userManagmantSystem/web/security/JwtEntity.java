@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+@Data
 @AllArgsConstructor
 public class JwtEntity implements UserDetails {
 
@@ -15,12 +16,6 @@ public class JwtEntity implements UserDetails {
     private final String username;
     private final String password;
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();

@@ -12,9 +12,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,14 +33,7 @@ public class JwtTokenProvider {
     private final UserService userService;
     private final UserMapper userMapper;
     private Key key;
-//    @Autowired
-//    public JwtTokenProvider(JwtProperties jwtProperties,
-//                            UserDetailsService userDetailsService,
-//                            UserService userService) {
-//        this.jwtProperties = jwtProperties;
-//        this.userDetailsService = userDetailsService;
-//        this.userService = userService;
-//    }
+
     @PostConstruct
     public void init() {
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
@@ -72,7 +63,6 @@ public class JwtTokenProvider {
                 .signWith(key)
                 .compact();
     }
-
     public JwtResponse refreshUserTokens(String refreshToken) throws UserNotFoundException {
         JwtResponse jwtResponse = new JwtResponse();
         if (!validateToken(refreshToken)) {
@@ -87,7 +77,6 @@ public class JwtTokenProvider {
         jwtResponse.setRefreshToken(createRefreshToken(userId, user.getUsername()));
         return jwtResponse;
     }
-
     public boolean validateToken(String token) {
         Jws<Claims> claims = Jwts
                 .parserBuilder()
@@ -96,7 +85,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
     }
-
     private String getId(String token) {
         return Jwts
                 .parserBuilder()
@@ -107,7 +95,6 @@ public class JwtTokenProvider {
                 .get("id")
                 .toString();
     }
-
     private String getUsername(String token) {
         return Jwts
                 .parserBuilder()
@@ -117,7 +104,6 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
     }
-
     public Authentication getAuthentication(String token) {
         String username = getUsername(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
