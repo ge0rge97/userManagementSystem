@@ -14,9 +14,10 @@ spring:
   liquibase:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
-
 security:
   jwt:
     secret: ZGpnaWVuZmdocG93aGpnd2VmZ2p3ZWZnaXdkdmZbc2R2anNkZnVvYmhkZmJpdQ==
     access: 3600000
     refresh: 2592000000
+spring-doc:
+  override-with-generic-response: false
